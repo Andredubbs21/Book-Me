@@ -1,0 +1,8 @@
+###
+GET http://localhost:5093/bookings
+
+###
+POST  http://localhost:5093/bookings/kurobattv/2/100
+
+###
+DELETE http://localhost:5093/bookings/kurobattv/2

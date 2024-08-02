@@ -1,0 +1,118 @@
+//EVENTS HTTP TEST
+###
+GET http://localhost:5059/events
+
+###
+GET http://localhost:5059/events/13
+
+###
+POST  http://localhost:5059/events
+Content-Type: application/json
+
+{
+    "Name": "Burning Man",
+    "Description": "Un festival interesante",
+    "Date": "2025-08-30T23:59:59",
+    "MaxCapacity": 500
+}
+###
+
+POST  http://localhost:5059/events
+Content-Type: application/json
+
+{
+    "Name": "Coachella",
+    "Description": "Annual music and arts festival",
+    "Date": "2025-04-12T12:00:00",
+    "MaxCapacity": 100000
+}
+###
+
+POST  http://localhost:5059/events
+Content-Type: application/json
+
+{
+    "Name": "Tomorrowland",
+    "Description": "Electronic dance music festival",
+    "Date": "2025-07-19T14:00:00",
+    "MaxCapacity": 400000
+}
+###
+
+POST  http://localhost:5059/events
+Content-Type: application/json
+
+{
+    "Name": "Oktoberfest",
+    "Description": "World's largest beer festival",
+    "Date": "2025-09-21T10:00:00",
+    "MaxCapacity": 6000000
+}
+###
+
+POST  http://localhost:5059/events
+Content-Type: application/json
+
+{
+    "Name": "Comic-Con",
+    "Description": "Annual comic book convention",
+    "Date": "2026-07-18T09:00:00",
+    "MaxCapacity": 135000
+}
+###
+
+POST  http://localhost:5059/events
+Content-Type: application/json
+
+{
+    "Name": "SXSW",
+    "Description": "Film, media, and music festival",
+    "Date": "2026-03-08T10:00:00",
+    "MaxCapacity": 75000
+}
+###
+POST  http://localhost:5059/events
+Content-Type: application/json
+
+{
+    "Name": "Glastonbury",
+    "Description": "Performing arts festival",
+    "Date": "2023-06-26T08:00:00",
+    "MaxCapacity": 200000
+}
+###
+
+POST  http://localhost:5059/events
+Content-Type: application/json
+
+{
+    "Name": "Lollapalooza",
+    "Description": "Annual music festival",
+    "Date": "2023-08-01T11:00:00",
+    "MaxCapacity": 100000
+}
+###
+
+POST  http://localhost:5059/events
+Content-Type: application/json
+
+{
+    "Name": "EDC Las Vegas",
+    "Description": "Electronic Daisy Carnival",
+    "Date": "2023-05-17T17:00:00",
+    "MaxCapacity": 400000
+}
+###
+
+POST  http://localhost:5059/events
+Content-Type: application/json
+
+{
+    "Name": "The Masters",
+    "Description": "Golf tournament",
+    "Date": "2023-04-11T08:00:00",
+    "MaxCapacity": 50000
+}
+
+###
+DELETE http://localhost:5059/events/13

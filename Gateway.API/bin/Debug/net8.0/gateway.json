@@ -1,0 +1,40 @@
+{
+    "Routes": [
+        {
+            "DownstreamPathTemplate": "/bookings",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5280
+                }
+            ],
+            "UpstreamPathTemplate": "/bookings",
+            "UpstreamHttpMethod": ["GET"]
+        },
+        {
+            "DownstreamPathTemplate": "/bookings/create_req/{username}/{id}/{amount}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5280
+                }
+            ],
+            "UpstreamPathTemplate": "/bookings/{username}/{id}/{amount}",
+            "UpstreamHttpMethod": ["POST"]
+        },
+        {
+            "DownstreamPathTemplate": "/bookings/user_event/{username}/{id}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5280
+                }
+            ],
+            "UpstreamPathTemplate": "/bookings/{username}/{id}",
+            "UpstreamHttpMethod": ["DELETE"]
+        }
+    ]
+}

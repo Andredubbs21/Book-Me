@@ -1,0 +1,111 @@
+###
+GET http://localhost:5280/bookings
+
+###
+GET http://localhost:5280/bookings/3
+
+###
+GET http://localhost:5280/bookings/user_name/johndoe
+
+###
+GET http://localhost:5280/bookings/event_id/3
+
+###
+POST http://localhost:5280/bookings
+Content-Type: application/json
+
+{
+    "Username": "kurobattv",
+    "EventId": 1,
+    "Amount": 250
+}
+###
+POST http://localhost:5280/bookings
+Content-Type: application/json
+
+{
+    "Username": "alicejohnson",
+    "EventId": 2,
+    "Amount": 200
+}
+###
+POST http://localhost:5280/bookings
+Content-Type: application/json
+
+{
+    "Username": "charliebrown",
+    "EventId": 3,
+    "Amount": 150
+}
+###
+POST http://localhost:5280/bookings
+Content-Type: application/json
+
+{
+    "Username": "janedoe",
+    "EventId": 4,
+    "Amount": 300
+}
+###
+POST http://localhost:5280/bookings
+Content-Type: application/json
+
+{
+    "Username": "bobsmith",
+    "EventId": 5,
+    "Amount": 500
+}
+###
+POST http://localhost:5280/bookings
+Content-Type: application/json
+
+{
+    "Username": "emilywhite",
+    "EventId": 6,
+    "Amount": 180
+}
+###
+POST http://localhost:5280/bookings
+Content-Type: application/json
+
+{
+    "Username": "frankgreen",
+    "EventId": 7,
+    "Amount": 120
+}
+###
+POST http://localhost:5280/bookings
+Content-Type: application/json
+
+{
+    "Username": "gracehill",
+    "EventId": 8,
+    "Amount": 400
+}
+###
+POST http://localhost:5280/bookings
+Content-Type: application/json
+
+{
+    "Username": "henryadams",
+    "EventId": 9,
+    "Amount": 220
+}
+###
+POST http://localhost:5280/bookings
+Content-Type: application/json
+
+{
+    "Username": "johndoe",
+    "EventId": 10,
+    "Amount": 350
+}
+
+
+
+###
+Delete http://localhost:5280/bookings/user_event/henryadams/13
+
+
+### 
+DELETE http://localhost:5280/bookings/25

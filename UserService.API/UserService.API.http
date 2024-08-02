@@ -1,0 +1,149 @@
+//USERS HTTP TEST
+###
+GET http://localhost:5253/users
+
+###
+GET http://localhost:5253/users/22
+
+###
+GET http://localhost:5253/users/user_name/andredubbs19
+
+###
+POST  http://localhost:5253/users
+Content-Type: application/json
+
+{
+    "Username": "kurobattv",
+    "FirstName": "Alessandro",
+    "LastName": "Ayestas",
+    "Email": "aleayestas@gmail.com",
+    "PhoneNumber": "9236-4565"
+}
+###
+
+POST  http://localhost:5253/users
+Content-Type: application/json
+
+{
+    "Username": "johndoe",
+    "FirstName": "John",
+    "LastName": "Doe",
+    "Email": "johndoe@example.com",
+    "PhoneNumber": "9123-4567"
+}
+###
+
+POST  http://localhost:5253/users
+Content-Type: application/json
+
+{
+    "Username": "janedoe",
+    "FirstName": "Jane",
+    "LastName": "Doe",
+    "Email": "janedoe@example.com",
+    "PhoneNumber": "9345-6789"
+}
+###
+
+POST  http://localhost:5253/users
+Content-Type: application/json
+
+{
+    "Username": "bobsmith",
+    "FirstName": "Bob",
+    "LastName": "Smith",
+    "Email": "bobsmith@example.com",
+    "PhoneNumber": "9456-7890"
+}
+###
+
+POST  http://localhost:5253/users
+Content-Type: application/json
+
+{
+    "Username": "alicejohnson",
+    "FirstName": "Alice",
+    "LastName": "Johnson",
+    "Email": "alicejohnson@example.com",
+    "PhoneNumber": "9567-8901"
+}
+###
+
+POST  http://localhost:5253/users
+Content-Type: application/json
+
+{
+    "Username": "charliebrown",
+    "FirstName": "Charlie",
+    "LastName": "Brown",
+    "Email": "charliebrown@example.com",
+    "PhoneNumber": "9678-9012"
+}
+###
+
+POST  http://localhost:5253/users
+Content-Type: application/json
+
+{
+    "Username": "emilywhite",
+    "FirstName": "Emily",
+    "LastName": "White",
+    "Email": "emilywhite@example.com",
+    "PhoneNumber": "9789-0123"
+}
+###
+
+POST  http://localhost:5253/users
+Content-Type: application/json
+
+{
+    "Username": "frankgreen",
+    "FirstName": "Frank",
+    "LastName": "Green",
+    "Email": "frankgreen@example.com",
+    "PhoneNumber": "9890-1234"
+}
+###
+
+POST  http://localhost:5253/users
+Content-Type: application/json
+
+{
+    "Username": "gracehill",
+    "FirstName": "Grace",
+    "LastName": "Hill",
+    "Email": "gracehill@example.com",
+    "PhoneNumber": "9901-2345"
+}
+###
+
+POST  http://localhost:5253/users
+Content-Type: application/json
+
+{
+    "Username": "henryadams",
+    "FirstName": "Henry",
+    "LastName": "Adams",
+    "Email": "henryadams@example.com",
+    "PhoneNumber": "9012-3456"
+}
+###
+
+
+###
+PUT http://localhost:5253/users/1
+Content-Type: application/json
+
+{
+    "Username": "KurobaTTV",
+    "FirstName": "Alessandro",
+    "LastName": "Ayestas",
+    "Email": "blackuroba@gmail.com",
+    "PhoneNumber": "9236-4565"
+}
+
+###
+DELETE http://localhost:5253/users/2
+
+###
+DELETE http://localhost:5253/users/user_name/andredubbs
