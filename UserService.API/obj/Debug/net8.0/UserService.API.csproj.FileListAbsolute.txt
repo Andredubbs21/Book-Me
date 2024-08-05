@@ -128,3 +128,10 @@ C:\Users\andre\OneDrive\Desktop\concurrencia\project\EventHandler\userservice.ap
 C:\Users\andre\OneDrive\Desktop\concurrencia\project\EventHandler\userservice.api\obj\Debug\net8.0\UserService.API.pdb
 C:\Users\andre\OneDrive\Desktop\concurrencia\project\EventHandler\userservice.api\obj\Debug\net8.0\UserService.API.genruntimeconfig.cache
 C:\Users\andre\OneDrive\Desktop\concurrencia\project\EventHandler\userservice.api\obj\Debug\net8.0\ref\UserService.API.dll
+C:\Users\andre\OneDrive\Desktop\concurrencia\project\EventHandler\userservice.api\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\andre\OneDrive\Desktop\concurrencia\project\EventHandler\userservice.api\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\andre\OneDrive\Desktop\concurrencia\project\EventHandler\userservice.api\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\andre\OneDrive\Desktop\concurrencia\project\EventHandler\userservice.api\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\andre\OneDrive\Desktop\concurrencia\project\EventHandler\userservice.api\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\andre\OneDrive\Desktop\concurrencia\project\EventHandler\userservice.api\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\andre\OneDrive\Desktop\concurrencia\project\EventHandler\userservice.api\obj\Debug\net8.0\UserService.API.sourcelink.json

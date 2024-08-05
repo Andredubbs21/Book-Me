@@ -6,9 +6,9 @@ namespace UserService.Api.Mapping;
 public static class UserMapping
 {
     // Maps a create user data transfer object to a database entity 
-    public static User ToEntity(this CreateUserDto user){
-        return new User(){
-            Username = user.Username,
+    public static UserIdentity ToEntity(this CreateUserDto user){
+        return new UserIdentity(){
+            UserName = user.UserName,
             FirstName = user.FirstName,
             LastName = user.LastName,
             Email = user.Email,
@@ -17,10 +17,10 @@ public static class UserMapping
     }
 
     // Maps a update user data transfer object to a database entity 
-    public static User ToEntity(this UpdateUserDto user, int id){
-        return new User(){
+    public static UserIdentity ToEntity(this UpdateUserDto user, string id){
+        return new UserIdentity(){
             Id = id,
-            Username = user.Username,
+            UserName = user.Username,
             FirstName = user.FirstName,
             LastName = user.LastName,
             Email = user.Email,
@@ -29,21 +29,21 @@ public static class UserMapping
     }
 
     //Maps an entity to a summarized user data transfer object
-    public static UserSummaryDto ToUserSummaryDto(this User user){
+    public static UserSummaryDto ToUserSummaryDto(this UserIdentity user){
         return new(
-            user.Username,
+            user.UserName!,
             user.LastName,
-            user.Email
+            user.Email!
         );
     }
      //Maps an entity to a detailed user data transfer object
-    public static UserDetailsDto ToUserDetailsDto(this User user){
+    public static UserDetailsDto ToUserDetailsDto(this UserIdentity user){
         return new(
             user.Id,
-            user.Username,
-            user.FirstName,
+            user.UserName!,
+            user.FirstName!,
             user.LastName,
-            user.Email,
+            user.Email!,
             user.PhoneNumber ?? string.Empty
         );
     }

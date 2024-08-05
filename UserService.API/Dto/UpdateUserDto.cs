@@ -6,5 +6,7 @@ public record class UpdateUserDto
     string FirstName,
     string LastName,
     string Email,
-    string PhoneNumber
+    string PhoneNumber,
+    string Password,
+    string CurrentPassword
 );

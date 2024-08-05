@@ -3,10 +3,24 @@
 GET http://localhost:5253/users
 
 ###
-GET http://localhost:5253/users/22
+GET http://localhost:5253/users/eda759fe-035d-4d44-b10e-67800ced4ecd
 
 ###
-GET http://localhost:5253/users/user_name/andredubbs19
+GET http://localhost:5253/users/user_name/kurobattv
+
+
+###
+POST  http://localhost:5253/users
+Content-Type: application/json
+
+{
+    "Username": "andredubbs19",
+    "FirstName": "Andres",
+    "LastName": "Dubon",
+    "Email": "andredubbs19@gmail.com",
+    "PhoneNumber": "9504-4932",
+    "Password": "Andre2021!"
+}
 
 ###
 POST  http://localhost:5253/users
@@ -17,133 +31,147 @@ Content-Type: application/json
     "FirstName": "Alessandro",
     "LastName": "Ayestas",
     "Email": "aleayestas@gmail.com",
-    "PhoneNumber": "9236-4565"
+    "PhoneNumber": "9236-4565",
+    "Password": "Asta2021!"
 }
 ###
-
+###
 POST  http://localhost:5253/users
 Content-Type: application/json
 
 {
-    "Username": "johndoe",
+    "Username": "mariajones",
+    "FirstName": "Maria",
+    "LastName": "Jones",
+    "Email": "maria.jones@example.com",
+    "PhoneNumber": "9123-4567",
+    "Password": "Maria2021!"
+}
+###
+POST  http://localhost:5253/users
+Content-Type: application/json
+
+{
+    "Username": "johnsmith",
     "FirstName": "John",
-    "LastName": "Doe",
-    "Email": "johndoe@example.com",
-    "PhoneNumber": "9123-4567"
-}
-###
-
-POST  http://localhost:5253/users
-Content-Type: application/json
-
-{
-    "Username": "janedoe",
-    "FirstName": "Jane",
-    "LastName": "Doe",
-    "Email": "janedoe@example.com",
-    "PhoneNumber": "9345-6789"
-}
-###
-
-POST  http://localhost:5253/users
-Content-Type: application/json
-
-{
-    "Username": "bobsmith",
-    "FirstName": "Bob",
     "LastName": "Smith",
-    "Email": "bobsmith@example.com",
-    "PhoneNumber": "9456-7890"
+    "Email": "john.smith@example.com",
+    "PhoneNumber": "9345-6789",
+    "Password": "John2021!"
 }
 ###
-
 POST  http://localhost:5253/users
 Content-Type: application/json
 
 {
-    "Username": "alicejohnson",
-    "FirstName": "Alice",
-    "LastName": "Johnson",
-    "Email": "alicejohnson@example.com",
-    "PhoneNumber": "9567-8901"
-}
-###
-
-POST  http://localhost:5253/users
-Content-Type: application/json
-
-{
-    "Username": "charliebrown",
-    "FirstName": "Charlie",
-    "LastName": "Brown",
-    "Email": "charliebrown@example.com",
-    "PhoneNumber": "9678-9012"
-}
-###
-
-POST  http://localhost:5253/users
-Content-Type: application/json
-
-{
-    "Username": "emilywhite",
+    "Username": "emilyclark",
     "FirstName": "Emily",
-    "LastName": "White",
-    "Email": "emilywhite@example.com",
-    "PhoneNumber": "9789-0123"
+    "LastName": "Clark",
+    "Email": "emily.clark@example.com",
+    "PhoneNumber": "9456-7890",
+    "Password": "Emily2021!"
 }
 ###
-
 POST  http://localhost:5253/users
 Content-Type: application/json
 
 {
-    "Username": "frankgreen",
-    "FirstName": "Frank",
-    "LastName": "Green",
-    "Email": "frankgreen@example.com",
-    "PhoneNumber": "9890-1234"
+    "Username": "davidharris",
+    "FirstName": "David",
+    "LastName": "Harris",
+    "Email": "david.harris@example.com",
+    "PhoneNumber": "9567-8901",
+    "Password": "David2021!"
 }
 ###
-
 POST  http://localhost:5253/users
 Content-Type: application/json
 
 {
-    "Username": "gracehill",
-    "FirstName": "Grace",
-    "LastName": "Hill",
-    "Email": "gracehill@example.com",
-    "PhoneNumber": "9901-2345"
+    "Username": "sarajones",
+    "FirstName": "Sara",
+    "LastName": "Jones",
+    "Email": "sara.jones@example.com",
+    "PhoneNumber": "9678-9012",
+    "Password": "Sara2021!"
 }
 ###
-
 POST  http://localhost:5253/users
 Content-Type: application/json
 
 {
-    "Username": "henryadams",
-    "FirstName": "Henry",
-    "LastName": "Adams",
-    "Email": "henryadams@example.com",
-    "PhoneNumber": "9012-3456"
+    "Username": "michaelbrown",
+    "FirstName": "Michael",
+    "LastName": "Brown",
+    "Email": "michael.brown@example.com",
+    "PhoneNumber": "9789-0123",
+    "Password": "Michael2021!"
 }
 ###
+POST  http://localhost:5253/users
+Content-Type: application/json
+
+{
+    "Username": "lindawilliams",
+    "FirstName": "Linda",
+    "LastName": "Williams",
+    "Email": "linda.williams@example.com",
+    "PhoneNumber": "9890-1234",
+    "Password": "Linda2021!"
+}
+###
+POST  http://localhost:5253/users
+Content-Type: application/json
+
+{
+    "Username": "jameslee",
+    "FirstName": "James",
+    "LastName": "Lee",
+    "Email": "james.lee@example.com",
+    "PhoneNumber": "9901-2345",
+    "Password": "James2021!"
+}
+###
+POST  http://localhost:5253/users
+Content-Type: application/json
+
+{
+    "Username": "annasmith",
+    "FirstName": "Anna",
+    "LastName": "Smith",
+    "Email": "anna.smith@example.com",
+    "PhoneNumber": "9012-3456",
+    "Password": "Anna2021!"
+}
 
 
 ###
-PUT http://localhost:5253/users/1
+PUT http://localhost:5253/users/1459a511-7390-4112-b4e9-279285aba59d
 Content-Type: application/json
 
 {
     "Username": "KurobaTTV",
     "FirstName": "Alessandro",
     "LastName": "Ayestas",
-    "Email": "blackuroba@gmail.com",
+    "Email": "blackuroba21@gmail.com",
     "PhoneNumber": "9236-4565"
 }
 
 ###
-DELETE http://localhost:5253/users/2
+DELETE http://localhost:5253/users/69622192-ef1b-49b3-9047-19dc9957105d
 
 ###
-DELETE http://localhost:5253/users/user_name/andredubbs
+DELETE http://localhost:5253/users/user_name/kurobattv
+
+
+###
+POST http://localhost:5253/auth/login
+Content-Type: application/json
+
+{
+    "UserName": "kurobattv",
+    "Password": "Asta2021!"
+}
+
+### 
+Post http://localhost:5253/auth/login_params/kurobattv/Asta2021!
