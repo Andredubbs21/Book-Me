@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2wKW8h4D7gk=",
+  "dgSpecHash": "G4YMfN4dcsw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\gateway.api\\Gateway.API.csproj",
+  "projectFilePath": "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\Gateway.API\\Gateway.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\andre\\.nuget\\packages\\fluentvalidation\\11.8.0\\fluentvalidation.11.8.0.nupkg.sha512",
     "C:\\Users\\andre\\.nuget\\packages\\ipaddressrange\\6.0.0\\ipaddressrange.6.0.0.nupkg.sha512",

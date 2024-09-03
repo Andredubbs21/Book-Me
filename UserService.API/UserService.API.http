@@ -14,12 +14,12 @@ POST  http://localhost:5253/users
 Content-Type: application/json
 
 {
-    "Username": "andredubbs19",
-    "FirstName": "Andres",
-    "LastName": "Dubon",
-    "Email": "andredubbs19@gmail.com",
+    "Username": "nicky142.m",
+    "FirstName": "Nirisy",
+    "LastName": "Martinez",
+    "Email": "nirisy142@gmail.com",
     "PhoneNumber": "9504-4932",
-    "Password": "Andre2021!"
+    "Password": "Niriy2021!"
 }
 
 ###

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\gateway.api\\Gateway.API.csproj": {}
+    "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\Gateway.API\\Gateway.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\gateway.api\\Gateway.API.csproj": {
+    "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\Gateway.API\\Gateway.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\gateway.api\\Gateway.API.csproj",
+        "projectUniqueName": "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\Gateway.API\\Gateway.API.csproj",
         "projectName": "Gateway.API",
-        "projectPath": "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\gateway.api\\Gateway.API.csproj",
+        "projectPath": "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\Gateway.API\\Gateway.API.csproj",
         "packagesPath": "C:\\Users\\andre\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\gateway.api\\obj\\",
+        "outputPath": "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\Gateway.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
