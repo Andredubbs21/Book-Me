@@ -2,7 +2,7 @@
 
 public record class UserDetailsDto
 (
-    int Id,
+    string Id,
     string Username,
     string FirstName,
     string LastName,

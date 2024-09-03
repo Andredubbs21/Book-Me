@@ -1,0 +1,12 @@
+###
+GET http://localhost:5253/users
+Content-Type: application/json
+
+{
+    "UserName": "andredubbs19",
+    "NormalizedUserName": "Andres Dubon",
+    "email": "andredubbs19232@gmail.com",
+    "password": "Forthnight2!"
+}
+
+### 

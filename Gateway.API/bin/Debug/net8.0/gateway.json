@@ -35,6 +35,18 @@
             ],
             "UpstreamPathTemplate": "/bookings/{username}/{id}",
             "UpstreamHttpMethod": ["DELETE"]
+        },
+        {
+            "DownstreamPathTemplate": "/auth/login_params/{username}/{password}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5253
+                }
+            ],
+            "UpstreamPathTemplate": "/login/{username}/{password}",
+            "UpstreamHttpMethod": ["POST"]
         }
     ]
 }

@@ -36,3 +36,4 @@ C:\Users\andre\OneDrive\Desktop\concurrencia\project\EventHandler\gateway.api\ob
 C:\Users\andre\OneDrive\Desktop\concurrencia\project\EventHandler\gateway.api\obj\Debug\net8.0\Gateway.API.pdb
 C:\Users\andre\OneDrive\Desktop\concurrencia\project\EventHandler\gateway.api\obj\Debug\net8.0\Gateway.API.genruntimeconfig.cache
 C:\Users\andre\OneDrive\Desktop\concurrencia\project\EventHandler\gateway.api\obj\Debug\net8.0\ref\Gateway.API.dll
+C:\Users\andre\OneDrive\Desktop\concurrencia\project\EventHandler\gateway.api\obj\Debug\net8.0\Gateway.API.sourcelink.json
