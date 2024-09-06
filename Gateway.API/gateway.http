@@ -1,6 +1,0 @@
-
-###
-POST  http://localhost:5093/api/gateway/kurobattv/6/5
-
-###
-DELETE http://localhost:5093/bookings/kurobattv/2
