@@ -1,16 +1,16 @@
 //USERS HTTP TEST
 ###
-GET http://localhost:5253/users
+GET http://localhost:5253/api/user
 
 ###
-GET http://localhost:5253/users/eda759fe-035d-4d44-b10e-67800ced4ecd
+GET http://localhost:5253/api/user/eda759fe-035d-4d44-b10e-67800ced4ecd
 
 ###
-GET http://localhost:5253/users/user_name/kurobattv
+GET http://localhost:5253/api/user/user_name/kurobattv
 
 
 ###
-POST  http://localhost:5253/users
+POST  http://localhost:5253/api/user
 Content-Type: application/json
 
 {
@@ -23,7 +23,7 @@ Content-Type: application/json
 }
 
 ###
-POST  http://localhost:5253/users
+POST  http://localhost:5253/api/user
 Content-Type: application/json
 
 {
@@ -36,7 +36,7 @@ Content-Type: application/json
 }
 ###
 ###
-POST  http://localhost:5253/users
+POST  http://localhost:5253/api/user
 Content-Type: application/json
 
 {
@@ -48,7 +48,7 @@ Content-Type: application/json
     "Password": "Maria2021!"
 }
 ###
-POST  http://localhost:5253/users
+POST  http://localhost:5253/api/user
 Content-Type: application/json
 
 {
@@ -60,7 +60,7 @@ Content-Type: application/json
     "Password": "John2021!"
 }
 ###
-POST  http://localhost:5253/users
+POST  http://localhost:5253/api/user
 Content-Type: application/json
 
 {
@@ -72,7 +72,7 @@ Content-Type: application/json
     "Password": "Emily2021!"
 }
 ###
-POST  http://localhost:5253/users
+POST  http://localhost:5253/api/user
 Content-Type: application/json
 
 {
@@ -84,7 +84,7 @@ Content-Type: application/json
     "Password": "David2021!"
 }
 ###
-POST  http://localhost:5253/users
+POST  http://localhost:5253/api/user
 Content-Type: application/json
 
 {
@@ -96,7 +96,7 @@ Content-Type: application/json
     "Password": "Sara2021!"
 }
 ###
-POST  http://localhost:5253/users
+POST  http://localhost:5253/api/user
 Content-Type: application/json
 
 {
@@ -108,7 +108,7 @@ Content-Type: application/json
     "Password": "Michael2021!"
 }
 ###
-POST  http://localhost:5253/users
+POST  http://localhost:5253/api/user
 Content-Type: application/json
 
 {
@@ -120,7 +120,7 @@ Content-Type: application/json
     "Password": "Linda2021!"
 }
 ###
-POST  http://localhost:5253/users
+POST  http://localhost:5253/api/user
 Content-Type: application/json
 
 {
@@ -132,7 +132,7 @@ Content-Type: application/json
     "Password": "James2021!"
 }
 ###
-POST  http://localhost:5253/users
+POST  http://localhost:5253/api/user
 Content-Type: application/json
 
 {
@@ -146,7 +146,7 @@ Content-Type: application/json
 
 
 ###
-PUT http://localhost:5253/users/1459a511-7390-4112-b4e9-279285aba59d
+PUT http://localhost:5253/api/user/1459a511-7390-4112-b4e9-279285aba59d
 Content-Type: application/json
 
 {
@@ -158,14 +158,14 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:5253/users/69622192-ef1b-49b3-9047-19dc9957105d
+DELETE http://localhost:5253/api/user/69622192-ef1b-49b3-9047-19dc9957105d
 
 ###
-DELETE http://localhost:5253/users/user_name/kurobattv
+DELETE http://localhost:5253/api/user/user_name/kurobattv
 
 
 ###
-POST http://localhost:5253/auth/login
+POST http://localhost:5253/api/auth/login
 Content-Type: application/json
 
 {
@@ -174,4 +174,4 @@ Content-Type: application/json
 }
 
 ### 
-Post http://localhost:5253/auth/login_params/kurobattv/Asta2021!
+Post http://localhost:5253/api/auth/login_params/kurobattv/Asta2021!

@@ -1,12 +1,27 @@
 //EVENTS HTTP TEST
 ###
-GET http://localhost:5059/events
+GET http://localhost:5059/api/event
 
 ###
-GET http://localhost:5059/events/13
+GET http://localhost:5059/api/event/8
+
 
 ###
-POST  http://localhost:5059/events
+GET http://localhost:5059/api/event/event_name/Coachella
+
+###
+PUT http://localhost:5059/api/event/8
+Content-Type: application/json
+
+{
+    "Name": "Lollapalooza",
+    "Description": "Annual music festival",
+    "Date": "2023-08-01T23:00:00",
+    "MaxCapacity": 100000
+}
+
+###
+POST  http://localhost:5059/api/event
 Content-Type: application/json
 
 {
@@ -17,7 +32,7 @@ Content-Type: application/json
 }
 ###
 
-POST  http://localhost:5059/events
+POST  http://localhost:5059/api/event
 Content-Type: application/json
 
 {
@@ -28,7 +43,7 @@ Content-Type: application/json
 }
 ###
 
-POST  http://localhost:5059/events
+POST  http://localhost:5059/api/event
 Content-Type: application/json
 
 {
@@ -39,7 +54,7 @@ Content-Type: application/json
 }
 ###
 
-POST  http://localhost:5059/events
+POST  http://localhost:5059/api/event
 Content-Type: application/json
 
 {
@@ -50,7 +65,7 @@ Content-Type: application/json
 }
 ###
 
-POST  http://localhost:5059/events
+POST  http://localhost:5059/api/event
 Content-Type: application/json
 
 {
@@ -61,7 +76,7 @@ Content-Type: application/json
 }
 ###
 
-POST  http://localhost:5059/events
+POST  http://localhost:5059/api/event
 Content-Type: application/json
 
 {
@@ -71,7 +86,7 @@ Content-Type: application/json
     "MaxCapacity": 75000
 }
 ###
-POST  http://localhost:5059/events
+POST  http://localhost:5059/api/event
 Content-Type: application/json
 
 {
@@ -82,7 +97,7 @@ Content-Type: application/json
 }
 ###
 
-POST  http://localhost:5059/events
+POST  http://localhost:5059/api/event
 Content-Type: application/json
 
 {
@@ -93,7 +108,7 @@ Content-Type: application/json
 }
 ###
 
-POST  http://localhost:5059/events
+POST  http://localhost:5059/api/event
 Content-Type: application/json
 
 {
@@ -104,7 +119,7 @@ Content-Type: application/json
 }
 ###
 
-POST  http://localhost:5059/events
+POST  http://localhost:5059/api/event
 Content-Type: application/json
 
 {
@@ -115,4 +130,4 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:5059/events/13
+DELETE http://localhost:5059/api/event/13

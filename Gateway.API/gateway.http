@@ -1,11 +1,6 @@
-###
-GET http://localhost:5093/bookings
 
 ###
-POST  http://localhost:5093/bookings/kurobattv/2/100
+POST  http://localhost:5093/api/gateway/kurobattv/6/5
 
 ###
 DELETE http://localhost:5093/bookings/kurobattv/2
-
-###
-POST http://localhost:5093/login/kurobattv/Asta2021!

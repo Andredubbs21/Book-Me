@@ -23,13 +23,17 @@ builder.Services.AddIdentityCore<UserIdentity>()
 .AddEntityFrameworkStores<UserIdentityDbContext>()
 .AddApiEndpoints();
 
+builder.Services.AddControllers(); // Add this line for controllers
+
 // build app 
 var app = builder.Build();
-
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Map endpoints
-app.MapUserEndpoints();
-app.MapAuthEndpoints();
+app.MapControllers(); // Replace endpoint mapping with controller mapping
+
 // run app
 await app.MigrateDbAsync();
 app.Run();

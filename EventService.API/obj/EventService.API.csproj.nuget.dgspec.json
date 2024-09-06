@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\EventService.API\\EventService.API.csproj": {}
+    "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\eventservice.api\\EventService.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\EventService.API\\EventService.API.csproj": {
+    "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\eventservice.api\\EventService.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\EventService.API\\EventService.API.csproj",
+        "projectUniqueName": "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\eventservice.api\\EventService.API.csproj",
         "projectName": "EventService.API",
-        "projectPath": "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\EventService.API\\EventService.API.csproj",
+        "projectPath": "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\eventservice.api\\EventService.API.csproj",
         "packagesPath": "C:\\Users\\andre\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\EventService.API\\obj\\",
+        "outputPath": "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\eventservice.api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

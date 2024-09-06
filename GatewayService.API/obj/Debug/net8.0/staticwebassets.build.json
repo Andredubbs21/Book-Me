@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "YuyeV/F5tdbXzLQTRshDDwuJZ4USdXB//JrILYRCk2s=",
+  "Source": "GatewayService.API",
+  "BasePath": "_content/GatewayService.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

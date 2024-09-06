@@ -8,11 +8,16 @@ var userConnString = builder.Configuration.GetConnectionString("Booking");
 builder.Services.AddDbContext<BookingDbContext>(options =>
     options.UseSqlite(userConnString));
 builder.Services.AddHttpClient();
+builder.Services.AddControllers(); // Add this line for controllers
+
 
 // build app 
 var app = builder.Build();
-// Map endpoints
-app.MapBookingEndpoints();
+app.UseRouting();
+
+// Map controllers
+app.MapControllers(); // Replace endpoint mapping with controller mapping
+
 await app.MigrateDbAsync();
 // run app
 app.Run();

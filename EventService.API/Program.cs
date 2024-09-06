@@ -8,10 +8,12 @@ var userConnString = builder.Configuration.GetConnectionString("Event");
 // Register DbContexts with their respective connection strings
 builder.Services.AddDbContext<EventDbContext>(options =>
     options.UseSqlite(userConnString));
+builder.Services.AddControllers();
 // build app 
 var app = builder.Build();
-// Map endpoints
-app.MapEventEndpoints();
+app.UseRouting();
+// Map controllers 
+app.MapControllers();
 await app.MigrateDbAsync();
 // run app
 app.Run();

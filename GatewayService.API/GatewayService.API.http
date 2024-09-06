@@ -1,0 +1,11 @@
+
+###
+POST http://localhost:5003/api/gateway/user_id_amount/kurobattv/6/200
+
+###
+POST http://localhost:5003/api/gateway/user_eventname_amount/kurobattv/SXSW/200
+###
+DELETE http://localhost:5003/api/gateway/user_eventname/kurobattv/SXSW
+
+###
+DELETE http://localhost:5003/api/gateway/user_eventId/kurobattv/6
