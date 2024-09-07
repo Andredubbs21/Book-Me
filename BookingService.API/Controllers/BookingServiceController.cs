@@ -4,6 +4,11 @@ using BookingService.API.Data;
 using Microsoft.EntityFrameworkCore;
 using BookingService.Api.Dtos.Event;
 using BookingService.API.Dto.booking;
+using RabbitMQ.Client;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 
 namespace BookingService.API.Controllers
 {
@@ -16,6 +21,29 @@ namespace BookingService.API.Controllers
         private const string UserRoute = "http://localhost:5253/api/user";
         private const string EventRoute = "http://localhost:5059/api/event";
 
+private void SendBookingToQueue(CreateBookingDto newBooking)
+    {
+        var factory = new ConnectionFactory() { HostName = "localhost" };
+        using (var connection = factory.CreateConnection())
+        using (var channel = connection.CreateModel())
+        {
+            channel.QueueDeclare(queue: "bookingQueue",
+                                 durable: false,
+                                 exclusive: false,
+                                 autoDelete: false,
+                                 arguments: null);
+
+            string message = JsonSerializer.Serialize(newBooking);
+            var body = Encoding.UTF8.GetBytes(message);
+
+            channel.BasicPublish(exchange: "",
+                                 routingKey: "bookingQueue",
+                                 basicProperties: null,
+                                 body: body);
+
+            Console.WriteLine(" [x] Sent {0}", message);
+        }
+    }
         public BookingController(BookingDbContext dbContext, IHttpClientFactory clientFactory)
         {
             _dbContext = dbContext;
@@ -139,64 +167,68 @@ namespace BookingService.API.Controllers
         }
 
         // POST: api/bookings
-        [HttpPost]
-        public async Task<ActionResult<BookingDetailsDto>> CreateBooking(CreateBookingDto newBooking)
-        {
-            var client = _clientFactory.CreateClient();
+[HttpPost]
+public async Task<ActionResult<BookingDetailsDto>> CreateBooking(CreateBookingDto newBooking)
+{
+    var client = _clientFactory.CreateClient();
 
-            // Verify user exists
-            var userResponse = await client.GetAsync($"{UserRoute}/user_name/{newBooking.Username}");
-            if (!userResponse.IsSuccessStatusCode)
-            {
-                return NotFound("User not found");
-            }
+    // Verificar que el usuario existe
+    var userResponse = await client.GetAsync($"{UserRoute}/user_name/{newBooking.Username}");
+    if (!userResponse.IsSuccessStatusCode)
+    {
+        return NotFound("User not found");
+    }
 
-            // Verify event exists
-            var eventResponse = await client.GetAsync($"{EventRoute}/{newBooking.EventId}");
-            if (!eventResponse.IsSuccessStatusCode)
-            {
-                return NotFound("Event not found");
-            }
+    // Verificar que el evento existe
+    var eventResponse = await client.GetAsync($"{EventRoute}/{newBooking.EventId}");
+    if (!eventResponse.IsSuccessStatusCode)
+    {
+        return NotFound("Event not found");
+    }
 
-            var eventDetails = await eventResponse.Content.ReadFromJsonAsync<EventDetailsDto>();
+    var eventDetails = await eventResponse.Content.ReadFromJsonAsync<EventDetailsDto>();
 
-            // Check event date has not passed
-            if (DateTime.Now >= eventDetails!.Date)
-            {
-                return BadRequest("Event has already concluded");
-            }
+    // Verificar que el evento no haya pasado
+    if (DateTime.Now >= eventDetails!.Date)
+    {
+        return BadRequest("Event has already concluded");
+    }
 
-            // Check event has remaining tickets
-            var eventBookings = await _dbContext.Bookings
-                .AsNoTracking()
-                .Where(b => b.EventId == eventDetails.Id)
-                .ToListAsync();
-            var totalAmount = eventBookings.Sum(b => b.Amount) + newBooking.Amount;
-            if (totalAmount > eventDetails.MaxCapacity)
-            {
-                return BadRequest("Event capacity exceeded");
-            }
+    // Verificar la capacidad del evento
+    var eventBookings = await _dbContext.Bookings
+        .AsNoTracking()
+        .Where(b => b.EventId == eventDetails.Id)
+        .ToListAsync();
+    var totalAmount = eventBookings.Sum(b => b.Amount) + newBooking.Amount;
+    if (totalAmount > eventDetails.MaxCapacity)
+    {
+        return BadRequest("Event capacity exceeded");
+    }
 
-            // Check if user has not issued a ticket
-            var userBookings = await _dbContext.Bookings
-                .AsNoTracking()
-                .Where(b => b.Username == newBooking.Username && b.EventId == newBooking.EventId)
-                .ToListAsync();
-            if (userBookings.Count > 0)
-            {
-                return BadRequest("User has already booked for this event");
-            }
+    // Verificar si el usuario ya ha emitido un ticket
+    var userBookings = await _dbContext.Bookings
+        .AsNoTracking()
+        .Where(b => b.Username == newBooking.Username && b.EventId == newBooking.EventId)
+        .ToListAsync();
+    if (userBookings.Count > 0)
+    {
+        return BadRequest("User has already booked for this event");
+    }
 
-            // Convert dto to entity and add booking
-            var booking = newBooking.ToEntity();
-            _dbContext.Bookings.Add(booking);
-            await _dbContext.SaveChangesAsync();
+    // Convertir DTO a entidad y agregar reserva
+    var booking = newBooking.ToEntity();
+    _dbContext.Bookings.Add(booking);
+    await _dbContext.SaveChangesAsync();
 
-            var newBookingDetails = booking.ToBookingDetailsDto();
-            newBookingDetails.EventName = eventDetails.Name;
+    // Enviar la reserva a la cola de RabbitMQ
+    SendBookingToQueue(newBooking);
 
-            return CreatedAtRoute("GetBookingById", new { id = booking.Id }, newBookingDetails);
-        }
+    // Preparar la respuesta
+    var newBookingDetails = booking.ToBookingDetailsDto();
+    newBookingDetails.EventName = eventDetails.Name;
+
+    return CreatedAtRoute("GetBookingById", new { id = booking.Id }, newBookingDetails);
+}
 
 
         [HttpPost("create_req/{username}/{id}/{amount}")]
