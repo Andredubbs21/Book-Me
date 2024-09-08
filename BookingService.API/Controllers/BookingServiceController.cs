@@ -21,6 +21,29 @@ namespace BookingService.API.Controllers
         private const string UserRoute = "http://localhost:5253/api/user";
         private const string EventRoute = "http://localhost:5059/api/event";
 
+private void SendCancelBookingToQueue(CancelBookingDto cancelBooking)
+{
+    var factory = new ConnectionFactory() { HostName = "localhost" };
+    using (var connection = factory.CreateConnection())
+    using (var channel = connection.CreateModel())
+    {
+        channel.QueueDeclare(queue: "cancelBookingQueue",
+                             durable: false,
+                             exclusive: false,
+                             autoDelete: false,
+                             arguments: null);
+
+        string message = JsonSerializer.Serialize(cancelBooking);
+        var body = Encoding.UTF8.GetBytes(message);
+
+        channel.BasicPublish(exchange: "",
+                             routingKey: "cancelBookingQueue",
+                             basicProperties: null,
+                             body: body);
+
+        Console.WriteLine(" [x] Sent cancellation request {0}", message);
+    }
+}
 private void SendBookingToQueue(CreateBookingDto newBooking)
     {
         var factory = new ConnectionFactory() { HostName = "localhost" };
@@ -389,21 +412,31 @@ public async Task<ActionResult<BookingDetailsDto>> CreateBooking(CreateBookingDt
             return NoContent();
         }
 
-        // DELETE: api/bookings/{id}
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBookingById(int id)
-        {
-            var booking = await _dbContext.Bookings.FindAsync(id);
-            if (booking == null)
-            {
-                return NotFound();
-            }
+[HttpDelete("{id}")]
+public async Task<IActionResult> DeleteBookingById(int id)
+{
+    var booking = await _dbContext.Bookings.FindAsync(id);
+    if (booking == null)
+    {
+        return NotFound();
+    }
 
-            _dbContext.Bookings.Remove(booking);
-            await _dbContext.SaveChangesAsync();
+    var cancelBookingDto = new CancelBookingDto
+    {
+        Id = booking.Id,
+        Username = booking.Username,
+        EventId = booking.EventId
+    };
 
-            return NoContent();
-        }
+    // Send cancellation message to RabbitMQ
+    SendCancelBookingToQueue(cancelBookingDto);
+
+    _dbContext.Bookings.Remove(booking);
+    await _dbContext.SaveChangesAsync();
+
+    return NoContent();
+}
+
 
         // DELETE: api/bookings/user_event/{username}/{id}
         [HttpDelete("user_event/{username}/{id}")]
