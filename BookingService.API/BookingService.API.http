@@ -19,9 +19,9 @@ POST http://localhost:5280/api/booking
 Content-Type: application/json
 
 {
-    "Username": "kurobattv",
-    "EventId": 1,
-    "Amount": 100
+    "Username": "mariajones",
+    "EventId": 3,
+    "Amount": 10
 }
 ###
 POST http://localhost:5280/api/booking
@@ -38,8 +38,8 @@ Content-Type: application/json
 
 {
     "Username": "johnsmith",
-    "EventId": 3,
-    "Amount": 200
+    "EventId": 6,
+    "Amount": 20
 }
 ###
 POST http://localhost:5280/api/booking
@@ -47,7 +47,7 @@ Content-Type: application/json
 
 {
     "Username": "emilyclark",
-    "EventId": 4,
+    "EventId": 6,
     "Amount": 180
 }
 ###
@@ -83,8 +83,8 @@ Content-Type: application/json
 
 {
     "Username": "lindawilliams",
-    "EventId": 4,
-    "Amount": 140
+    "EventId": 3,
+    "Amount": 20
 }
 ###
 POST http://localhost:5280/api/booking
@@ -92,8 +92,8 @@ Content-Type: application/json
 
 {
     "Username": "jameslee",
-    "EventId": 1,
-    "Amount": 170
+    "EventId": 3,
+    "Amount": 20
 }
 
 

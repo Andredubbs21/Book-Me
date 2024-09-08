@@ -21,52 +21,100 @@ namespace BookingService.API.Controllers
         private const string UserRoute = "http://localhost:5253/api/user";
         private const string EventRoute = "http://localhost:5059/api/event";
 
-private void SendCancelBookingToQueue(CancelBookingDto cancelBooking)
-{
-    var factory = new ConnectionFactory() { HostName = "localhost" };
-    using (var connection = factory.CreateConnection())
-    using (var channel = connection.CreateModel())
-    {
-        channel.QueueDeclare(queue: "cancelBookingQueue",
-                             durable: false,
-                             exclusive: false,
-                             autoDelete: false,
-                             arguments: null);
-
-        string message = JsonSerializer.Serialize(cancelBooking);
-        var body = Encoding.UTF8.GetBytes(message);
-
-        channel.BasicPublish(exchange: "",
-                             routingKey: "cancelBookingQueue",
-                             basicProperties: null,
-                             body: body);
-
-        Console.WriteLine(" [x] Sent cancellation request {0}", message);
-    }
-}
-private void SendBookingToQueue(CreateBookingDto newBooking)
-    {
-        var factory = new ConnectionFactory() { HostName = "localhost" };
-        using (var connection = factory.CreateConnection())
-        using (var channel = connection.CreateModel())
+        private void TestConnection()
         {
-            channel.QueueDeclare(queue: "bookingQueue",
-                                 durable: false,
-                                 exclusive: false,
-                                 autoDelete: false,
-                                 arguments: null);
+            var factory = new ConnectionFactory()
+            {
+                HostName = "localhost",  // O 'rabbitmq' si estás en un contenedor Docker
+                Port = 5672,
+                UserName = "user",
+                Password = "mypasss",
+                VirtualHost = "/"
+            };
 
-            string message = JsonSerializer.Serialize(newBooking);
-            var body = Encoding.UTF8.GetBytes(message);
-
-            channel.BasicPublish(exchange: "",
-                                 routingKey: "bookingQueue",
-                                 basicProperties: null,
-                                 body: body);
-
-            Console.WriteLine(" [x] Sent {0}", message);
+            try
+            {
+                using (var connection = factory.CreateConnection())
+                using (var channel = connection.CreateModel())
+                {
+                    Console.WriteLine("Connected successfully");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Connection error: {ex.Message}");
+                // Registrar excepción o debug
+            }
         }
-    }
+
+
+
+        private void SendCancelBookingToQueue(CancelBookingDto cancelBooking)
+        {
+            var factory = new ConnectionFactory()
+            {
+                HostName = "localhost",
+                Port = 5672,
+                UserName = "user",  // Usuario definido en docker-compose
+                Password = "mypasss"  // Contraseña definida en docker-compose
+            };
+            using (var connection = factory.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+                channel.QueueDeclare(queue: "cancelBookingQueue",
+                                     durable: false,
+                                     exclusive: false,
+                                     autoDelete: false,
+                                     arguments: null);
+
+                string message = JsonSerializer.Serialize(cancelBooking);
+                var body = Encoding.UTF8.GetBytes(message);
+
+                channel.BasicPublish(exchange: "",
+                                     routingKey: "cancelBookingQueue",
+                                     basicProperties: null,
+                                     body: body);
+
+                Console.WriteLine(" [x] Sent cancellation request {0}", message);
+            }
+        }
+        private void SendBookingToQueue(CreateBookingDto newBooking)
+        {
+            try
+            {
+                var factory = new ConnectionFactory()
+                {
+                    HostName = "localhost",
+                    Port = 5672,
+                    UserName = "user",  // Usuario definido en docker-compose
+                    Password = "mypasss"  // Contraseña definida en docker-compose
+                };
+                using (var connection = factory.CreateConnection())
+                using (var channel = connection.CreateModel())
+                {
+                    channel.QueueDeclare(queue: "bookingQueue",
+                                         durable: false,
+                                         exclusive: false,
+                                         autoDelete: false,
+                                         arguments: null);
+
+                    string message = JsonSerializer.Serialize(newBooking);
+                    var body = Encoding.UTF8.GetBytes(message);
+
+                    channel.BasicPublish(exchange: String.Empty,
+                                         routingKey: "bookingQueue",
+                                         basicProperties: null,
+                                         body: body);
+
+                    Console.WriteLine(" [x] Sent {0}", message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                // Registrar excepción o debug
+            }
+        }
         public BookingController(BookingDbContext dbContext, IHttpClientFactory clientFactory)
         {
             _dbContext = dbContext;
@@ -77,6 +125,7 @@ private void SendBookingToQueue(CreateBookingDto newBooking)
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BookingSummaryDto>>> GetBookings()
         {
+            TestConnection();
             var bookings = await _dbContext.Bookings
                 .Select(b => b.ToBookingSummaryDto())
                 .AsNoTracking()
@@ -124,13 +173,15 @@ private void SendBookingToQueue(CreateBookingDto newBooking)
             foreach (var booking in bookings)
             {
                 var eventResponse = await client.GetAsync($"{EventRoute}/{booking.EventId}");
-                if (!eventResponse.IsSuccessStatusCode){
+                if (!eventResponse.IsSuccessStatusCode)
+                {
                     booking.EventName = "";
                 }
-                else{
+                else
+                {
                     var eventDetails = await eventResponse.Content.ReadFromJsonAsync<EventDetailsDto>();
                     booking.EventName = eventDetails!.Name;
-                }   
+                }
             }
 
             return bookings.Count == 0 ? NotFound() : Ok(bookings);
@@ -138,12 +189,14 @@ private void SendBookingToQueue(CreateBookingDto newBooking)
 
         //Get bookings by event name
         [HttpGet("event_name/{eventName}")]
-        public async Task<ActionResult<IEnumerable<BookingDetailsDto>>> GetBookingsByEventName(string eventName){
+        public async Task<ActionResult<IEnumerable<BookingDetailsDto>>> GetBookingsByEventName(string eventName)
+        {
             var client = _clientFactory.CreateClient();
 
 
             var eventResponse = await client.GetAsync($"{EventRoute}/event_name/{eventName}");
-            if(!eventResponse.IsSuccessStatusCode){
+            if (!eventResponse.IsSuccessStatusCode)
+            {
                 return NotFound();
             }
             var eventDetails = await eventResponse.Content.ReadFromJsonAsync<EventDetailsDto>();
@@ -161,7 +214,7 @@ private void SendBookingToQueue(CreateBookingDto newBooking)
 
             return bookings.Count == 0 ? NotFound() : Ok(bookings);
         }
-        
+
         // GET: api/bookings/event_id/{id}
         [HttpGet("event_id/{id}")]
         public async Task<ActionResult<IEnumerable<BookingDetailsDto>>> GetBookingsByEventId(int id)
@@ -177,81 +230,83 @@ private void SendBookingToQueue(CreateBookingDto newBooking)
             foreach (var booking in bookings)
             {
                 var eventResponse = await client.GetAsync($"{EventRoute}/{booking.EventId}");
-                if (!eventResponse.IsSuccessStatusCode){
+                if (!eventResponse.IsSuccessStatusCode)
+                {
                     booking.EventName = "";
                 }
-                else{
+                else
+                {
                     var eventDetails = await eventResponse.Content.ReadFromJsonAsync<EventDetailsDto>();
                     booking.EventName = eventDetails!.Name;
-                }   
+                }
             }
 
             return bookings.Count == 0 ? NotFound() : Ok(bookings);
         }
 
         // POST: api/bookings
-[HttpPost]
-public async Task<ActionResult<BookingDetailsDto>> CreateBooking(CreateBookingDto newBooking)
-{
-    var client = _clientFactory.CreateClient();
+        [HttpPost]
+        public async Task<ActionResult<BookingDetailsDto>> CreateBooking(CreateBookingDto newBooking)
+        {
+            var client = _clientFactory.CreateClient();
 
-    // Verificar que el usuario existe
-    var userResponse = await client.GetAsync($"{UserRoute}/user_name/{newBooking.Username}");
-    if (!userResponse.IsSuccessStatusCode)
-    {
-        return NotFound("User not found");
-    }
+            // Verificar que el usuario existe
+            var userResponse = await client.GetAsync($"{UserRoute}/user_name/{newBooking.Username}");
+            if (!userResponse.IsSuccessStatusCode)
+            {
+                return NotFound("User not found");
+            }
 
-    // Verificar que el evento existe
-    var eventResponse = await client.GetAsync($"{EventRoute}/{newBooking.EventId}");
-    if (!eventResponse.IsSuccessStatusCode)
-    {
-        return NotFound("Event not found");
-    }
+            // Verificar que el evento existe
+            var eventResponse = await client.GetAsync($"{EventRoute}/{newBooking.EventId}");
+            if (!eventResponse.IsSuccessStatusCode)
+            {
+                return NotFound("Event not found");
+            }
 
-    var eventDetails = await eventResponse.Content.ReadFromJsonAsync<EventDetailsDto>();
+            var eventDetails = await eventResponse.Content.ReadFromJsonAsync<EventDetailsDto>();
 
-    // Verificar que el evento no haya pasado
-    if (DateTime.Now >= eventDetails!.Date)
-    {
-        return BadRequest("Event has already concluded");
-    }
+            // Verificar que el evento no haya pasado
+            if (DateTime.Now >= eventDetails!.Date)
+            {
+                return BadRequest("Event has already concluded");
+            }
 
-    // Verificar la capacidad del evento
-    var eventBookings = await _dbContext.Bookings
-        .AsNoTracking()
-        .Where(b => b.EventId == eventDetails.Id)
-        .ToListAsync();
-    var totalAmount = eventBookings.Sum(b => b.Amount) + newBooking.Amount;
-    if (totalAmount > eventDetails.MaxCapacity)
-    {
-        return BadRequest("Event capacity exceeded");
-    }
+            // Verificar la capacidad del evento
+            var eventBookings = await _dbContext.Bookings
+                .AsNoTracking()
+                .Where(b => b.EventId == eventDetails.Id)
+                .ToListAsync();
+            var totalAmount = eventBookings.Sum(b => b.Amount) + newBooking.Amount;
+            if (totalAmount > eventDetails.MaxCapacity)
+            {
+                return BadRequest("Event capacity exceeded");
+            }
 
-    // Verificar si el usuario ya ha emitido un ticket
-    var userBookings = await _dbContext.Bookings
-        .AsNoTracking()
-        .Where(b => b.Username == newBooking.Username && b.EventId == newBooking.EventId)
-        .ToListAsync();
-    if (userBookings.Count > 0)
-    {
-        return BadRequest("User has already booked for this event");
-    }
+            // Verificar si el usuario ya ha emitido un ticket
+            var userBookings = await _dbContext.Bookings
+                .AsNoTracking()
+                .Where(b => b.Username == newBooking.Username && b.EventId == newBooking.EventId)
+                .ToListAsync();
+            if (userBookings.Count > 0)
+            {
+                return BadRequest("User has already booked for this event");
+            }
 
-    // Convertir DTO a entidad y agregar reserva
-    var booking = newBooking.ToEntity();
-    _dbContext.Bookings.Add(booking);
-    await _dbContext.SaveChangesAsync();
+            // Convertir DTO a entidad y agregar reserva
+            var booking = newBooking.ToEntity();
+            _dbContext.Bookings.Add(booking);
+            await _dbContext.SaveChangesAsync();
 
-    // Enviar la reserva a la cola de RabbitMQ
-    SendBookingToQueue(newBooking);
+            // Enviar la reserva a la cola de RabbitMQ
+            SendBookingToQueue(newBooking);
 
-    // Preparar la respuesta
-    var newBookingDetails = booking.ToBookingDetailsDto();
-    newBookingDetails.EventName = eventDetails.Name;
+            // Preparar la respuesta
+            var newBookingDetails = booking.ToBookingDetailsDto();
+            newBookingDetails.EventName = eventDetails.Name;
 
-    return CreatedAtRoute("GetBookingById", new { id = booking.Id }, newBookingDetails);
-}
+            return CreatedAtRoute("GetBookingById", new { id = booking.Id }, newBookingDetails);
+        }
 
 
         [HttpPost("create_req/{username}/{id}/{amount}")]
@@ -412,30 +467,30 @@ public async Task<ActionResult<BookingDetailsDto>> CreateBooking(CreateBookingDt
             return NoContent();
         }
 
-[HttpDelete("{id}")]
-public async Task<IActionResult> DeleteBookingById(int id)
-{
-    var booking = await _dbContext.Bookings.FindAsync(id);
-    if (booking == null)
-    {
-        return NotFound();
-    }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBookingById(int id)
+        {
+            var booking = await _dbContext.Bookings.FindAsync(id);
+            if (booking == null)
+            {
+                return NotFound();
+            }
 
-    var cancelBookingDto = new CancelBookingDto
-    {
-        Id = booking.Id,
-        Username = booking.Username,
-        EventId = booking.EventId
-    };
+            var cancelBookingDto = new CancelBookingDto
+            {
+                Id = booking.Id,
+                Username = booking.Username,
+                EventId = booking.EventId
+            };
 
-    // Send cancellation message to RabbitMQ
-    SendCancelBookingToQueue(cancelBookingDto);
+            // Send cancellation message to RabbitMQ
+            SendCancelBookingToQueue(cancelBookingDto);
 
-    _dbContext.Bookings.Remove(booking);
-    await _dbContext.SaveChangesAsync();
+            _dbContext.Bookings.Remove(booking);
+            await _dbContext.SaveChangesAsync();
 
-    return NoContent();
-}
+            return NoContent();
+        }
 
 
         // DELETE: api/bookings/user_event/{username}/{id}
@@ -478,7 +533,7 @@ public async Task<IActionResult> DeleteBookingById(int id)
             return NoContent();
         }
 
-          
+
         [HttpDelete("user_eventname/{username}/{eventname}")]
         public async Task<IActionResult> DeleteBookingByUserAndEventName(string username, string eventname)
         {
@@ -516,6 +571,6 @@ public async Task<IActionResult> DeleteBookingById(int id)
 
             return NoContent();
         }
-        
+
     }
 }

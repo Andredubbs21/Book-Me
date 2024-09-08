@@ -3023,23 +3023,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\andre\\.nuget\\packages\\": {},
+    "C:\\Users\\w\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\GatewayService.API\\GatewayService.API.csproj",
+      "projectUniqueName": "C:\\Users\\w\\Documents\\UNIVERSIDAD\\Onceavo Periodo\\Concurrencia\\Proyecto\\Book-Me\\GatewayService.API\\GatewayService.API.csproj",
       "projectName": "GatewayService.API",
-      "projectPath": "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\GatewayService.API\\GatewayService.API.csproj",
-      "packagesPath": "C:\\Users\\andre\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\andre\\OneDrive\\Desktop\\concurrencia\\project\\EventHandler\\GatewayService.API\\obj\\",
+      "projectPath": "C:\\Users\\w\\Documents\\UNIVERSIDAD\\Onceavo Periodo\\Concurrencia\\Proyecto\\Book-Me\\GatewayService.API\\GatewayService.API.csproj",
+      "packagesPath": "C:\\Users\\w\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\w\\Documents\\UNIVERSIDAD\\Onceavo Periodo\\Concurrencia\\Proyecto\\Book-Me\\GatewayService.API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\andre\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\w\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3048,7 +3048,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

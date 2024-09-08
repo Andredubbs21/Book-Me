@@ -12,7 +12,8 @@ builder.Services.AddHttpClient();
 builder.Services.AddControllers(); // Add this line for controllers
 
 // Register RabbitMQConsumerService as a hosted service
-builder.Services.AddHostedService<RabbitMQCancelConsumerService>();
+builder.Services.AddTransient<RabbitMQCancelConsumerService>();
+builder.Services.AddTransient<RabbitMQConsumerService>();
 
 // build app 
 var app = builder.Build();
