@@ -92,7 +92,7 @@ Content-Type: application/json
 
 {
     "Username": "jameslee",
-    "EventId": 3,
+    "EventId": 4,
     "Amount": 20
 }
 
