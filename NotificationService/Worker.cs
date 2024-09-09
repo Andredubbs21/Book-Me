@@ -46,7 +46,7 @@ public class Worker : BackgroundService
 
     public override Task StartAsync(CancellationToken cancellationToken)
     {
-        _consumer.Received += (model, content) =>
+        _consumer.Received += async (model, content) =>
         {
             var body = content.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
@@ -57,6 +57,8 @@ public class Worker : BackgroundService
                 subject: "Prueba#1",
                 body: "Sos un Crack, lograste hacer lo de los emails."
             );
+
+            await _emailService.Send(emailMetadata);
 
             _channel.BasicAck(content.DeliveryTag, false);
         };
