@@ -109,3 +109,4 @@ C:\Users\jrgir\OneDrive\Documentos\GitHub\Book-Me\NotificationService\obj\Debug\
 C:\Users\jrgir\OneDrive\Documentos\GitHub\Book-Me\NotificationService\obj\Debug\net8.0\NotificationService.pdb
 C:\Users\jrgir\OneDrive\Documentos\GitHub\Book-Me\NotificationService\obj\Debug\net8.0\NotificationService.genruntimeconfig.cache
 C:\Users\jrgir\OneDrive\Documentos\GitHub\Book-Me\NotificationService\obj\Debug\net8.0\ref\NotificationService.dll
+C:\Users\w\Documents\UNIVERSIDAD\Onceavo Periodo\Concurrencia\Proyecto\Book-Me\NotificationService\bin\Debug\net8.0\RabbitMQ.Client.dll
