@@ -1,7 +1,12 @@
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System.Net.Security;
 using System.Text;
 using System.Threading.Channels;
+using System.Threading.Tasks;
+using FluentEmail.Core;
+using NotificationService.Services;
+
 
 namespace NotificationService;
 
@@ -10,12 +15,15 @@ public class Worker : BackgroundService
     private readonly IConnection _connection;
     private readonly IModel _channel;
     private readonly EventingBasicConsumer _consumer;  // Aquí no necesita ser redeclarado
+    private readonly IEmailService _emailService;
 
     private readonly ILogger<Worker> _logger;
 
-    public Worker(ILogger<Worker> logger)
+    public Worker(ILogger<Worker> logger, IEmailService emailService)
     {
         _logger = logger;
+        _emailService = emailService;
+
         var factory = new ConnectionFactory
         {
             HostName = "localhost",
@@ -33,6 +41,7 @@ public class Worker : BackgroundService
                                 arguments: null);
 
         _consumer = new EventingBasicConsumer(_channel);
+
     }
 
     public override Task StartAsync(CancellationToken cancellationToken)
@@ -42,9 +51,16 @@ public class Worker : BackgroundService
             var body = content.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
             Console.WriteLine(message);
+            
+            var emailMetadata = new EmailMetadata(
+                toAddress: "edgar.r.0228@gmail.com",
+                subject: "Prueba#1",
+                body: "Sos un Crack, lograste hacer lo de los emails."
+            );
 
             _channel.BasicAck(content.DeliveryTag, false);
         };
+
 
         _channel.BasicConsume(queue: "bookingQueue",
                               autoAck: false,
