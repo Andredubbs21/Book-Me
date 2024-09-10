@@ -21,37 +21,16 @@ namespace BookingService.API.Controllers
         private const string UserRoute = "http://localhost:5253/api/user";
         private const string EventRoute = "http://localhost:5059/api/event";
 
-        private void TestConnection()
-        {
-            var factory = new ConnectionFactory()
-            {
-                HostName = "localhost",  // O 'rabbitmq' si estás en un contenedor Docker
-                Port = 5672,
-                UserName = "user",
-                Password = "mypasss",
-                VirtualHost = "/"
-            };
-
-            try
-            {
-                
-                using (var connection = factory.CreateConnection())
-                using (var channel = connection.CreateModel())
-                {
-                    Console.WriteLine("Connected successfully");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Connection error: {ex.Message}");
-                // Registrar excepción o debug
-            }
-        }
-
-
 
         private void SendCancelBookingToQueue(CancelBookingDto cancelBooking)
         {
+            var crear = false;
+            var cancelData = new
+            {
+                cancelBooking,
+                crear
+            };
+
             var factory = new ConnectionFactory()
             {
                 HostName = "localhost",
@@ -62,17 +41,17 @@ namespace BookingService.API.Controllers
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
-                channel.QueueDeclare(queue: "cancelBookingQueue",
+                channel.QueueDeclare(queue: "bookingQueue",
                                      durable: false,
                                      exclusive: false,
                                      autoDelete: false,
                                      arguments: null);
 
-                string message = JsonSerializer.Serialize(cancelBooking);
+                string message = JsonSerializer.Serialize(cancelData);
                 var body = Encoding.UTF8.GetBytes(message);
 
                 channel.BasicPublish(exchange: "",
-                                     routingKey: "cancelBookingQueue",
+                                     routingKey: "bookingQueue",
                                      basicProperties: null,
                                      body: body);
 
@@ -83,6 +62,12 @@ namespace BookingService.API.Controllers
         {
             try
             {
+                var crear = false;
+                var createData = new
+                {
+                    newBooking,
+                    crear
+                };
                 var factory = new ConnectionFactory()
                 {
                     HostName = "localhost",
@@ -99,7 +84,7 @@ namespace BookingService.API.Controllers
                                          autoDelete: false,
                                          arguments: null);
 
-                    string message = JsonSerializer.Serialize(newBooking);
+                    string message = JsonSerializer.Serialize(createData);
                     var body = Encoding.UTF8.GetBytes(message);
 
                     channel.BasicPublish(exchange: String.Empty,
@@ -126,7 +111,6 @@ namespace BookingService.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BookingSummaryDto>>> GetBookings()
         {
-            TestConnection();
             var bookings = await _dbContext.Bookings
                 .Select(b => b.ToBookingSummaryDto())
                 .AsNoTracking()
@@ -481,7 +465,7 @@ namespace BookingService.API.Controllers
             {
                 Id = booking.Id,
                 Username = booking.Username,
-                EventId = booking.EventId
+                EventId = booking.EventId,
             };
 
             // Send cancellation message to RabbitMQ

@@ -7,7 +7,8 @@ builder.Services.AddFluentEmail(builder.Configuration);
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 
-builder.Services.AddTransient<Worker>();
+// El Worker debe estar registrado como HostedService
+builder.Services.AddHostedService<Worker>();
 
 var host = builder.Build();
 host.Run();

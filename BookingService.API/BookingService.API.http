@@ -92,7 +92,7 @@ Content-Type: application/json
 
 {
     "Username": "jameslee",
-    "EventId": 4,
+    "EventId": 5,
     "Amount": 20
 }
 
@@ -105,7 +105,7 @@ POST http://localhost:5280/api/booking/create_req_name/kurobattv/Coachella/10
 Delete http://localhost:5280/api/booking/user_event/henryadams/13
 
 ### 
-DELETE http://localhost:5280/api/booking/8
+DELETE http://localhost:5280/api/booking/36
 
 ###
 DELETE http://localhost:5280/api/booking/user_eventname/kurobattv/SXSW
