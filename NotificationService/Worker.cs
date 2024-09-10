@@ -84,18 +84,24 @@ public class Worker : BackgroundService
                 var createBooking = JsonSerializer.Deserialize<CreateBookingDto>(message);
                 if (createBooking != null)
                 {
+                    Console.WriteLine($"Respuesta User {createBooking}");
+                    
                     var client = _clientFactory.CreateClient();
                     var eventResponse = await client.GetAsync($"{EventRoute}/{createBooking.EventId}");
+                    Console.WriteLine($"Respuesta User {eventResponse}");
                     var eventDetails = await eventResponse.Content.ReadFromJsonAsync<EventDetailsDto>();
                     if (eventDetails != null)
                     {
+                        Console.WriteLine(eventDetails);
                         eventName = eventDetails.Name;
                     }
 
                     var userResponse = await client.GetAsync($"{UserRoute}/user_name/{createBooking.Username}");
+                    Console.WriteLine($"Respuesta User {userResponse}");
                     var userDetails = await userResponse.Content.ReadFromJsonAsync<UserDetailsDto>();
                     if (userDetails != null)
                     {
+                        Console.WriteLine(userDetails);
                         email = userDetails.Email;
                     }
 
