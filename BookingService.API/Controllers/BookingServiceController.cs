@@ -24,13 +24,6 @@ namespace BookingService.API.Controllers
 
         private void SendCancelBookingToQueue(CancelBookingDto cancelBooking)
         {
-            var crear = false;
-            var cancelData = new
-            {
-                cancelBooking,
-                crear
-            };
-
             var factory = new ConnectionFactory()
             {
                 HostName = "localhost",
@@ -41,17 +34,17 @@ namespace BookingService.API.Controllers
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
-                channel.QueueDeclare(queue: "bookingQueue",
+                channel.QueueDeclare(queue: "cancelBookingQueue",
                                      durable: false,
                                      exclusive: false,
                                      autoDelete: false,
                                      arguments: null);
 
-                string message = JsonSerializer.Serialize(cancelData);
+                string message = JsonSerializer.Serialize(cancelBooking);
                 var body = Encoding.UTF8.GetBytes(message);
 
                 channel.BasicPublish(exchange: "",
-                                     routingKey: "bookingQueue",
+                                     routingKey: "cancelBookingQueue",
                                      basicProperties: null,
                                      body: body);
 
@@ -62,12 +55,6 @@ namespace BookingService.API.Controllers
         {
             try
             {
-                var crear = false;
-                var createData = new
-                {
-                    newBooking,
-                    crear
-                };
                 var factory = new ConnectionFactory()
                 {
                     HostName = "localhost",
@@ -84,7 +71,7 @@ namespace BookingService.API.Controllers
                                          autoDelete: false,
                                          arguments: null);
 
-                    string message = JsonSerializer.Serialize(createData);
+                    string message = JsonSerializer.Serialize(newBooking);
                     var body = Encoding.UTF8.GetBytes(message);
 
                     channel.BasicPublish(exchange: String.Empty,
