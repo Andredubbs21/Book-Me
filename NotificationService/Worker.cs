@@ -110,15 +110,17 @@ public class Worker : BackgroundService
                                 subject: "Se ha registrado a un evento",
                                 body: $"{createBooking.userName} ha hecho una reservacion al evento {createBooking.eventName}.Este es un mensaje automatico No necesita responderlo."
                                 );
+                                    await emailService.Send(emailMetadata);//lo coloque aqui tambien
                             }else{
                                 var emailMetadata = new EmailMetadata(
                                 toAddress: createBooking.email,
                                 subject: "Ha cancelado un evento",
                                 body: $"{createBooking.userName} se ha cancelado su reservacion a este evento {createBooking.eventName}.Este es un mensaje automatico No necesita responderlo."
                                 );
+                                    await emailService.Send(emailMetadata);// lo coloque aqui 
                             }                            
 
-                            await emailService.Send(emailMetadata);
+                           // await emailService.Send(emailMetadata);  <---- Este es el error
                         }else{
                            
                             _logger.LogWarning($"La dirección de correo {createBooking.email} no es válida. No se enviará el correo.");
