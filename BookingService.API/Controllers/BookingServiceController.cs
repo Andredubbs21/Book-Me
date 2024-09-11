@@ -24,7 +24,7 @@ namespace BookingService.API.Controllers
         private const string EventRoute = "http://localhost:5059/api/event";
 
 
-        private void SendCancelBookingToQueue(messageInfo cancelBooking)
+        /*private void SendCancelBookingToQueue(messageInfo cancelBooking)
         {
             var factory = new ConnectionFactory()
             {
@@ -53,6 +53,7 @@ namespace BookingService.API.Controllers
                 Console.WriteLine(" [x] Sent cancellation request {0}", message);
             }
         }
+        */
         private void SendBookingToQueue(messageInfo newBooking)
         {
             try

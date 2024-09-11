@@ -21,9 +21,9 @@ public class Worker : BackgroundService
 {
     private readonly IConnection _connection;
     private readonly IModel _bookingQueue;
-    private readonly IModel _cancelBookingQueue;
+    //private readonly IModel _cancelBookingQueue;
     private readonly EventingBasicConsumer _createConsumer;
-    private readonly EventingBasicConsumer _cancelConsumer;
+    //private readonly EventingBasicConsumer _cancelConsumer;
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly ILogger<Worker> _logger;
 
@@ -53,16 +53,17 @@ public class Worker : BackgroundService
                               exclusive: false,
                               autoDelete: false,
                               arguments: null);
-
+        /*
         _cancelBookingQueue = _connection.CreateModel();
         _cancelBookingQueue.QueueDeclare(queue: "cancelBookingQueue",
                               durable: false,
                               exclusive: false,
                               autoDelete: false,
                               arguments: null);
+                              */
 
         _createConsumer = new EventingBasicConsumer(_bookingQueue);
-        _cancelConsumer = new EventingBasicConsumer(_cancelBookingQueue);
+        //_cancelConsumer = new EventingBasicConsumer(_cancelBookingQueue);
 
     }
 
@@ -100,14 +101,22 @@ public class Worker : BackgroundService
                     using (var scope = _scopeFactory.CreateScope())
                     {
                         var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
-                        _bookingQueue.BasicAck(content.DeliveryTag, false);
+
                         if (IsValidEmail(createBooking.email))
                         {
-                            var emailMetadata = new EmailMetadata(
+                            if(createBooking.crear){
+                                var emailMetadata = new EmailMetadata(
                                 toAddress: createBooking.email,
                                 subject: "Se ha registrado a un evento",
                                 body: $"{createBooking.userName} ha hecho una reservacion al evento {createBooking.eventName}.Este es un mensaje automatico No necesita responderlo."
-                            );
+                                );
+                            }else{
+                                var emailMetadata = new EmailMetadata(
+                                toAddress: createBooking.email,
+                                subject: "Ha cancelado un evento",
+                                body: $"{createBooking.userName} se ha cancelado su reservacion a este evento {createBooking.eventName}.Este es un mensaje automatico No necesita responderlo."
+                                );
+                            }                            
 
                             await emailService.Send(emailMetadata);
                         }else{
@@ -176,7 +185,7 @@ public class Worker : BackgroundService
                 _semaphore.Release(); // Liberar el recurso
             }
         };
-
+        /*
         _cancelConsumer.Received += async (model, content) =>
         {
             await _semaphore.WaitAsync(); // Limitar conexiones simultáneas
@@ -231,9 +240,10 @@ public class Worker : BackgroundService
                 _semaphore.Release(); // Liberar el recurso
             }
         };
+        */
 
         _bookingQueue.BasicConsume(queue: "bookingQueue", autoAck: false, consumer: _createConsumer);
-        _cancelBookingQueue.BasicConsume(queue: "cancelBookingQueue", autoAck: false, consumer: _cancelConsumer);
+        //_cancelBookingQueue.BasicConsume(queue: "cancelBookingQueue", autoAck: false, consumer: _cancelConsumer);
 
         while (!stoppingToken.IsCancellationRequested)
         {
@@ -244,7 +254,7 @@ public class Worker : BackgroundService
     public override void Dispose()
     {
         _bookingQueue.Close();
-        _cancelBookingQueue.Close();
+        //_cancelBookingQueue.Close();
         _connection.Close();
         base.Dispose();
     }
