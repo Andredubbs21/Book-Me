@@ -48,6 +48,19 @@ Content-Type: application/json
     "Password": "Maria2021!"
 }
 ###
+###
+POST  http://localhost:5253/api/user
+Content-Type: application/json
+
+{
+    "Username": "CodlCrawd",
+    "FirstName": "Edgar",
+    "LastName": "Romero",
+    "Email": "edgar.r.0228@gmail.com",
+    "PhoneNumber": "9640-3119",
+    "Password": "123EDGARsi!"
+}
+###
 POST  http://localhost:5253/api/user
 Content-Type: application/json
 

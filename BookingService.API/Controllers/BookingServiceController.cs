@@ -4,10 +4,12 @@ using BookingService.API.Data;
 using Microsoft.EntityFrameworkCore;
 using BookingService.Api.Dtos.Event;
 using BookingService.API.Dto.booking;
+using BookingService.API.Dto.Rabbit;
 using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using BookingService.API.Dto;
 
 
 namespace BookingService.API.Controllers
@@ -22,7 +24,7 @@ namespace BookingService.API.Controllers
         private const string EventRoute = "http://localhost:5059/api/event";
 
 
-        private void SendCancelBookingToQueue(CancelBookingDto cancelBooking)
+        private void SendCancelBookingToQueue(messageInfo cancelBooking)
         {
             var factory = new ConnectionFactory()
             {
@@ -51,7 +53,7 @@ namespace BookingService.API.Controllers
                 Console.WriteLine(" [x] Sent cancellation request {0}", message);
             }
         }
-        private void SendBookingToQueue(CreateBookingDto newBooking)
+        private void SendBookingToQueue(messageInfo newBooking)
         {
             try
             {
@@ -228,6 +230,11 @@ namespace BookingService.API.Controllers
             {
                 return NotFound("User not found");
             }
+            
+            var userDetails = await userResponse.Content.ReadFromJsonAsync<UserDetailsDto>();
+            if(userDetails.Email == ""){
+                return BadRequest("No tiene correo existente");
+            }
 
             // Verificar que el evento existe
             var eventResponse = await client.GetAsync($"{EventRoute}/{newBooking.EventId}");
@@ -271,11 +278,20 @@ namespace BookingService.API.Controllers
             await _dbContext.SaveChangesAsync();
 
             // Enviar la reserva a la cola de RabbitMQ
-            SendBookingToQueue(newBooking);
+            
+            
+            
+            
 
             // Preparar la respuesta
             var newBookingDetails = booking.ToBookingDetailsDto();
             newBookingDetails.EventName = eventDetails.Name;
+
+            var info = new messageInfo(userDetails.Email,newBooking.Username,eventDetails.Name);
+
+        
+
+            SendBookingToQueue(info);
 
             return CreatedAtRoute("GetBookingById", new { id = booking.Id }, newBookingDetails);
         }
@@ -442,11 +458,22 @@ namespace BookingService.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBookingById(int id)
         {
+            var client = _clientFactory.CreateClient();
+
             var booking = await _dbContext.Bookings.FindAsync(id);
             if (booking == null)
             {
                 return NotFound();
             }
+            var eventResponse = await client.GetAsync($"{EventRoute}/{booking.EventId}");
+            if (!eventResponse.IsSuccessStatusCode)
+            {
+                return NotFound("Event not found");
+            }
+
+            var eventDetails = await eventResponse.Content.ReadFromJsonAsync<EventDetailsDto>();
+
+            // Verificar que el evento no haya pasado
 
             var cancelBookingDto = new CancelBookingDto
             {
@@ -455,8 +482,24 @@ namespace BookingService.API.Controllers
                 EventId = booking.EventId,
             };
 
+            
+
+            var userResponse = await client.GetAsync($"{UserRoute}/user_name/{booking.Username}");
+            if (!userResponse.IsSuccessStatusCode)
+            {
+                return NotFound("User not found");
+            }
+            
+            var userDetails = await userResponse.Content.ReadFromJsonAsync<UserDetailsDto>();
+            Console.WriteLine(userDetails);
+            if(userDetails.Email == ""){
+                return BadRequest("No tiene correo existente");
+            }
+
             // Send cancellation message to RabbitMQ
-            SendCancelBookingToQueue(cancelBookingDto);
+            var info = new messageInfo(userDetails.Email,booking.Username,eventDetails.Name);
+
+            SendCancelBookingToQueue(info);
 
             _dbContext.Bookings.Remove(booking);
             await _dbContext.SaveChangesAsync();

@@ -2,13 +2,13 @@
 GET http://localhost:5280/api/booking
 
 ###
-GET http://localhost:5280/api/booking/3
+GET http://localhost:5280/api/booking/6
 
 ###
 GET http://localhost:5280/api/booking/user_name/kurobattv
 
 ###
-GET http://localhost:5280/api/booking/event_id/1
+GET http://localhost:5280/api/booking/event_id/6
 
 ###
 GET http://localhost:5280/api/booking/event_name/Coachella
@@ -78,6 +78,16 @@ Content-Type: application/json
     "Amount": 130
 }
 ###
+###
+POST http://localhost:5280/api/booking
+Content-Type: application/json
+
+{
+    "Username": "CodlCrawd",
+    "EventId": 4,
+    "Amount": 50
+}
+###
 POST http://localhost:5280/api/booking
 Content-Type: application/json
 
@@ -105,7 +115,7 @@ POST http://localhost:5280/api/booking/create_req_name/kurobattv/Coachella/10
 Delete http://localhost:5280/api/booking/user_event/henryadams/13
 
 ### 
-DELETE http://localhost:5280/api/booking/36
+DELETE http://localhost:5280/api/booking/63
 
 ###
 DELETE http://localhost:5280/api/booking/user_eventname/kurobattv/SXSW

@@ -11,6 +11,7 @@ using System.Text.Json;
 using NotificationService.Dto.booking;
 using System.Net.Http.Json;
 using NotificationService.Dto;
+using NotificationService.API.Dto.Rabbit;
 
 
 
@@ -67,6 +68,18 @@ public class Worker : BackgroundService
 
     private static SemaphoreSlim _semaphore = new SemaphoreSlim(5); // Permitir hasta 5 correos simultáneos
 
+    public bool IsValidEmail(string email)
+    {
+        try
+        {
+            var addr = new System.Net.Mail.MailAddress(email);
+            return addr.Address == email;
+        }
+        catch
+        {
+            return false;
+        }
+    }
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _createConsumer.Received += async (model, content) =>
@@ -75,12 +88,59 @@ public class Worker : BackgroundService
 
             try
             {
-                var email = "";
-                var eventName = "";
                 var body = content.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
+                Console.WriteLine("Se viene el mensaje de prueba");
                 Console.WriteLine(message);
+                var createBooking = JsonSerializer.Deserialize<messageInfo>(message);
+                Console.WriteLine(createBooking);
 
+                if (createBooking != null)
+                {
+                    using (var scope = _scopeFactory.CreateScope())
+                    {
+                        var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
+                        _bookingQueue.BasicAck(content.DeliveryTag, false);
+                        if (IsValidEmail(createBooking.email))
+                        {
+                            var emailMetadata = new EmailMetadata(
+                                toAddress: createBooking.email,
+                                subject: "Se ha registrado a un evento",
+                                body: $"{createBooking.userName} ha hecho una reservacion al evento {createBooking.eventName}.Este es un mensaje automatico No necesita responderlo."
+                            );
+
+                            await emailService.Send(emailMetadata);
+                        }else{
+                           
+                            _logger.LogWarning($"La dirección de correo {createBooking.email} no es válida. No se enviará el correo.");
+                        }
+                         _bookingQueue.BasicAck(content.DeliveryTag, false);
+                    }
+
+                }
+
+                /*
+                if(createBooking != null){
+                    Console.WriteLine($"User: {createBooking.Username}, Evento: {createBooking.EventId}");
+
+                    var client = _clientFactory.CreateClient();
+                    var eventResponse = await client.GetAsync($"{EventRoute}/{createBooking.EventId}");
+
+                    if(eventResponse.IsSuccessStatusCode){
+
+                        Console.WriteLine("funco");
+                        var eventDetails = await eventResponse.Content.ReadFromJsonAsync<EventDetailsDto>();
+                        Console.WriteLine("Miren datos", eventDetails);
+                        if(eventDetails != null) {
+                            Console.WriteLine("Miren datos", eventDetails!.Name);
+                            
+                        }
+                        
+                    }
+                }
+                /*
+                
+                /*
                 var createBooking = JsonSerializer.Deserialize<CreateBookingDto>(message);
                 if (createBooking != null)
                 {
@@ -105,20 +165,11 @@ public class Worker : BackgroundService
                         email = userDetails.Email;
                     }
 
-                    using (var scope = _scopeFactory.CreateScope())
-                    {
-                        var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
-
-                        var emailMetadata = new EmailMetadata(
-                            toAddress: email,
-                            subject: "Se ha registrado a un evento",
-                            body: $"{createBooking.Username} ha hecho una reservacion al evento {eventName}.Este es un mensaje automatico No necesita responderlo."
-                        );
-
-                        await emailService.Send(emailMetadata);
-                    }
+                    
+                    
                 }
-                _bookingQueue.BasicAck(content.DeliveryTag, false);
+                */
+
             }
             finally
             {
@@ -134,8 +185,33 @@ public class Worker : BackgroundService
             {
                 var body = content.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
+                Console.WriteLine("Se viene el mensaje de prueba");
                 Console.WriteLine(message);
+                var cancelBooking = JsonSerializer.Deserialize<messageInfo>(message);
+                Console.WriteLine(cancelBooking);
 
+                if (cancelBooking != null)
+                {
+                    using (var scope = _scopeFactory.CreateScope())
+                    {
+                        var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
+                        if (IsValidEmail(cancelBooking.email))
+                        {
+                            var emailMetadata = new EmailMetadata(
+                                toAddress: cancelBooking.email,
+                                subject: "Ha cancelado un evento",
+                                body: $"{cancelBooking.userName} se ha cancelado su reservacion a este evento {cancelBooking.eventName}.Este es un mensaje automatico No necesita responderlo."
+                            );
+
+                            await emailService.Send(emailMetadata);
+                        }else{
+                           
+                            _logger.LogWarning($"La dirección de correo {cancelBooking.email} no es válida. No se enviará el correo.");
+                        }
+                         _cancelBookingQueue.BasicAck(content.DeliveryTag, false);
+                    }
+
+                }
 
 
 
@@ -146,20 +222,9 @@ public class Worker : BackgroundService
                 //var eventResponse = await client.GetAsync($"{EventRoute}/{message.EventId}");
                 //var eventDetails = await eventResponse.Content.ReadFromJsonAsync<EventDetailsDto>(message);
 
-                using (var scope = _scopeFactory.CreateScope())
-                {
-                    var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
+                
 
-                    var emailMetadata = new EmailMetadata(
-                        toAddress: "edgar.r.0228@gmail.com",
-                        subject: "Prueba#1",
-                        body: "Sos un Crack, lograste hacer lo de los emails."
-                    );
-
-                    await emailService.Send(emailMetadata);
-                }
-
-                _cancelBookingQueue.BasicAck(content.DeliveryTag, false);
+                //_cancelBookingQueue.BasicAck(content.DeliveryTag, false);
             }
             finally
             {
