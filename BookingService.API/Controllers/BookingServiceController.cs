@@ -287,7 +287,7 @@ namespace BookingService.API.Controllers
             var newBookingDetails = booking.ToBookingDetailsDto();
             newBookingDetails.EventName = eventDetails.Name;
 
-            var info = new messageInfo(userDetails.Email,newBooking.Username,eventDetails.Name);
+            var info = new messageInfo(userDetails.Email,newBooking.Username,eventDetails.Name, true);
 
         
 
@@ -497,9 +497,9 @@ namespace BookingService.API.Controllers
             }
 
             // Send cancellation message to RabbitMQ
-            var info = new messageInfo(userDetails.Email,booking.Username,eventDetails.Name);
+            var info = new messageInfo(userDetails.Email,booking.Username,eventDetails.Name,false);
 
-            SendCancelBookingToQueue(info);
+            SendBookingToQueue(info);
 
             _dbContext.Bookings.Remove(booking);
             await _dbContext.SaveChangesAsync();
