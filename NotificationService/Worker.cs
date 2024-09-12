@@ -67,7 +67,7 @@ public class Worker : BackgroundService
 
     }
 
-    private static SemaphoreSlim _semaphore = new SemaphoreSlim(5); // Permitir hasta 5 correos simultáneos
+    private static SemaphoreSlim _semaphore = new SemaphoreSlim(2); // Permitir hasta 5 correos simultáneos
 
     public bool IsValidEmail(string email)
     {
@@ -99,7 +99,10 @@ public class Worker : BackgroundService
                 if (createBooking != null)
                 {
                     using (var scope = _scopeFactory.CreateScope())
-                    {
+                    {   
+                        try {
+
+                        
                         var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
 
                         if (IsValidEmail(createBooking.email))
@@ -126,6 +129,10 @@ public class Worker : BackgroundService
                             _logger.LogWarning($"La dirección de correo {createBooking.email} no es válida. No se enviará el correo.");
                         }
                          _bookingQueue.BasicAck(content.DeliveryTag, false);
+                        }
+                        catch (Exception ex){
+                            Console.WriteLine(ex);
+                        }
                     }
 
                 }
@@ -249,7 +256,7 @@ public class Worker : BackgroundService
 
         while (!stoppingToken.IsCancellationRequested)
         {
-            await Task.Delay(1000, stoppingToken);
+            await Task.Delay(2000, stoppingToken);
         }
     }
 
